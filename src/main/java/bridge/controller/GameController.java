@@ -1,0 +1,16 @@
+package bridge.controller;
+
+import bridge.view.OutputView;
+
+public class GameController {
+
+    private final OutputView outputView;
+
+    public GameController(OutputView outputView) {
+        this.outputView = outputView;
+    }
+
+    public void run() {
+        outputView.printStart();
+    }
+}

@@ -1,9 +1,13 @@
 package bridge;
 
+import bridge.config.AppConfig;
+import bridge.controller.GameController;
+
 public class Application {
 
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
-        System.out.println("초기 세팅");
+        AppConfig appConfig = new AppConfig();
+        GameController gameController = appConfig.gameController();
+        gameController.run();
     }
 }
