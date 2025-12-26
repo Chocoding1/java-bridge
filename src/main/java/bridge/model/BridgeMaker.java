@@ -1,5 +1,6 @@
 package bridge.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,15 @@ public class BridgeMaker {
      */
     public List<String> makeBridge(int size) {
         validateBridgeSize(size);
-        return null;
+        List<String> bridge = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            if (bridgeNumberGenerator.generate() == 1) {
+                bridge.add("U");
+                continue;
+            }
+            bridge.add("D");
+        }
+        return bridge;
     }
 
     private void validateBridgeSize(int size) {
