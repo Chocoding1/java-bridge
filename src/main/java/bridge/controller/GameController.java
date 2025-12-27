@@ -1,6 +1,9 @@
 package bridge.controller;
 
+import bridge.model.Bridge;
+import bridge.model.BridgeGame;
 import bridge.model.BridgeMaker;
+import bridge.model.GameResult;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 import java.util.List;
@@ -20,6 +23,13 @@ public class GameController {
     public void run() {
         outputView.printStart();
         int inputSize = inputView.readBridgeSize();
-        List<String> bridge = bridgeMaker.makeBridge(inputSize);
+        Bridge bridge = new Bridge(bridgeMaker.makeBridge(inputSize));
+        BridgeGame bridgeGame = new BridgeGame(bridge, new GameResult());
+        while (bridgeGame.isFinish()) {
+            String moving = inputView.readMoving();
+            if (bridgeGame.move(moving)) {
+
+            }
+        }
     }
 }
