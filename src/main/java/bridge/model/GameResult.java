@@ -10,4 +10,8 @@ public class GameResult {
     public void addMoveResult(String movingResult) {
         result.add(movingResult);
     }
+
+    public boolean isMove(int idx) {
+        return result.get(idx).equals("O");
+    }
 }

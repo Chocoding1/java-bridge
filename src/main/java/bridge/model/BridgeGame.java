@@ -28,14 +28,33 @@ public class BridgeGame {
             throw new IllegalArgumentException("[ERROR] 이동할 칸은 U 또는 D로만 입력해야 합니다.");
         }
 
-        if (bridge.canMove(currentIdx, movingCommand)) {
+        if (bridge.canMove(currentIdx++, movingCommand)) {
             gameResult.addMoveResult("O");
-            currentIdx++;
             return true;
         }
 
         gameResult.addMoveResult("X");
         return false;
+    }
+
+    public int getCurrentIdx() {
+        return currentIdx;
+    }
+
+    public boolean isBridgeUp(int idx) {
+        return !bridge.isDown(idx);
+    }
+
+    public boolean isBridgeDown(int idx) {
+        return bridge.isDown(idx);
+    }
+
+    public boolean isMove(int idx) {
+        return gameResult.isMove(idx);
+    }
+
+    public boolean isNotMove(int idx) {
+        return !gameResult.isMove(idx);
     }
 
     /**

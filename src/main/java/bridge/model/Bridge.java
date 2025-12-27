@@ -17,4 +17,8 @@ public class Bridge {
     public boolean IsOutOfIdx(int currentIdx) {
         return bridge.size() <= currentIdx;
     }
+
+    public boolean isDown(int idx) {
+        return bridge.get(idx).equals("D");
+    }
 }
