@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Bridge {
 
+    private static final String DOWN_COMMAND = "D";
+
     private final List<String> bridge;
 
     public Bridge(List<String> bridge) {
@@ -19,6 +21,6 @@ public class Bridge {
     }
 
     public boolean isDown(int idx) {
-        return bridge.get(idx).equals("D");
+        return bridge.get(idx).equals(DOWN_COMMAND);
     }
 }

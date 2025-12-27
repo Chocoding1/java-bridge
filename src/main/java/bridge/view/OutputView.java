@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 사용자에게 게임 진행 상황과 결과를 출력하는 역할을 한다.
- */
 public class OutputView {
 
     private static final String GAME_START_NOTICE = "다리 건너기 게임을 시작합니다.";
@@ -15,25 +12,21 @@ public class OutputView {
     private static final String GAME_SUCCESS_RESULT_NOTICE = "게임 성공 여부: ";
     private static final String GAME_TRY_COUNT_NOTICE = "총 시도한 횟수: ";
 
+    private static final String SUCCESS_MARK = "O";
+    private static final String FAIL_MARK = "X";
+    private static final String LEFT_SQUARE_BRACKET_FORMAT = "[ ";
+    private static final String RIGHT_SQUARE_BRACKET_FORMAT = " ]";
+    private static final String PIPE_FORMAT = " | ";
+
     public void printStart() {
         System.out.println(GAME_START_NOTICE);
     }
 
-    /**
-     * 현재까지 이동한 다리의 상태를 정해진 형식에 맞춰 출력한다.
-     * <p>
-     * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
-     */
     public void printMap(BridgeGame bridgeGame) {
         printUpMap(bridgeGame);
         printDownMap(bridgeGame);
     }
 
-    /**
-     * 게임의 최종 결과를 정해진 형식에 맞춰 출력한다.
-     * <p>
-     * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
-     */
     public void printResult(BridgeGame bridgeGame) {
         System.out.println(GAME_RESULT_NOTICE);
         printUpMap(bridgeGame);
@@ -46,37 +39,38 @@ public class OutputView {
         List<String> resultMap = new ArrayList<>();
         for (int i = 0; i < bridgeGame.getCurrentIdx(); i++) {
             if (bridgeGame.isBridgeUp(i) && bridgeGame.isMove(i)) {
-                resultMap.add("O");
+                resultMap.add(SUCCESS_MARK);
                 continue;
             }
             if (bridgeGame.isBridgeDown(i) && bridgeGame.isNotMove(i)) {
-                resultMap.add("X");
+                resultMap.add(FAIL_MARK);
                 continue;
             }
             resultMap.add(" ");
         }
-        System.out.println(
-                resultMap.stream()
-                        .collect(Collectors.joining(" | ", "[ ", " ]"))
-        );
+        printMap(resultMap);
     }
 
     private static void printDownMap(BridgeGame bridgeGame) {
         List<String> resultMap = new ArrayList<>();
         for (int i = 0; i < bridgeGame.getCurrentIdx(); i++) {
             if (bridgeGame.isBridgeDown(i) && bridgeGame.isMove(i)) {
-                resultMap.add("O");
+                resultMap.add(SUCCESS_MARK);
                 continue;
             }
             if (bridgeGame.isBridgeUp(i) && bridgeGame.isNotMove(i)) {
-                resultMap.add("X");
+                resultMap.add(FAIL_MARK);
                 continue;
             }
             resultMap.add(" ");
         }
+        printMap(resultMap);
+    }
+
+    private static void printMap(List<String> resultMap) {
         System.out.println(
                 resultMap.stream()
-                        .collect(Collectors.joining(" | ", "[ ", " ]"))
+                        .collect(Collectors.joining(PIPE_FORMAT, LEFT_SQUARE_BRACKET_FORMAT, RIGHT_SQUARE_BRACKET_FORMAT))
         );
     }
 }
