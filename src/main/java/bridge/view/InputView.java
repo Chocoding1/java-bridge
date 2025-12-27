@@ -29,7 +29,11 @@ public class InputView {
      */
     public String readMoving() {
         System.out.println(INPUT_MOVING_NOTICE);
-        return Console.readLine();
+        String input = Console.readLine();
+        if (!input.equals("U") && !input.equals("D")) {
+            throw new IllegalArgumentException("[ERROR] 이동할 칸은 U 또는 D로만 입력해야 합니다.");
+        }
+        return input;
     }
 
     /**

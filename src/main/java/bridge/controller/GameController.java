@@ -1,10 +1,11 @@
 package bridge.controller;
 
+import static bridge.util.ExceptionHandler.*;
+
 import bridge.model.Bridge;
 import bridge.model.BridgeGame;
 import bridge.model.BridgeMaker;
 import bridge.model.GameCommand;
-import bridge.model.GameResult;
 import bridge.view.InputView;
 import bridge.view.OutputView;
 
@@ -22,14 +23,13 @@ public class GameController {
 
     public void run() {
         outputView.printStart();
-        int inputSize = inputView.readBridgeSize();
-        Bridge bridge = new Bridge(bridgeMaker.makeBridge(inputSize));
+        Bridge bridge = retryUtilSuccess(this::createBridge);
         BridgeGame bridgeGame = new BridgeGame(bridge);
         while (!bridgeGame.isFinish()) {
-            String moving = inputView.readMoving();
+            String moving = retryUtilSuccess(inputView::readMoving);
             if (!bridgeGame.move(moving)) {
                 outputView.printMap(bridgeGame);
-                GameCommand gameCommand = new GameCommand(inputView.readGameCommand());
+                GameCommand gameCommand = retryUtilSuccess(() -> new GameCommand(inputView.readGameCommand()));
                 if (gameCommand.isQuit()) {
                     break;
                 }
@@ -39,5 +39,10 @@ public class GameController {
             outputView.printMap(bridgeGame);
         }
         outputView.printResult(bridgeGame);
+    }
+
+    private Bridge createBridge() {
+        int inputSize = inputView.readBridgeSize();
+        return new Bridge(bridgeMaker.makeBridge(inputSize));
     }
 }
