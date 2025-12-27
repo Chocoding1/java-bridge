@@ -3,6 +3,7 @@ package bridge.controller;
 import bridge.model.Bridge;
 import bridge.model.BridgeGame;
 import bridge.model.BridgeMaker;
+import bridge.model.GameCommand;
 import bridge.model.GameResult;
 import bridge.view.InputView;
 import bridge.view.OutputView;
@@ -28,25 +29,15 @@ public class GameController {
             String moving = inputView.readMoving();
             if (!bridgeGame.move(moving)) {
                 outputView.printMap(bridgeGame);
-                selectGameCommand(bridgeGame);
+                GameCommand gameCommand = new GameCommand(inputView.readGameCommand());
+                if (gameCommand.isQuit()) {
+                    break;
+                }
+                bridgeGame.retry();
                 continue;
             }
             outputView.printMap(bridgeGame);
         }
-    }
-
-    private void selectGameCommand(BridgeGame bridgeGame) {
-        String restartCommand = inputView.readGameCommand();
-        if (!restartCommand.equals("R") && !restartCommand.equals("Q")) {
-            throw new IllegalArgumentException("[ERROR] 게임 재시작/종료 여부는 R 또는 Q만 입력할 수 있습니다.");
-        }
-
-        if (restartCommand.equals("R")) {
-            bridgeGame.retry();
-        }
-
-        if (restartCommand.equals("Q")) {
-            bridgeGame.quit();
-        }
+        outputView.printResult(bridgeGame);
     }
 }

@@ -6,13 +6,15 @@ package bridge.model;
 public class BridgeGame {
 
     private final Bridge bridge;
-    private int currentIdx = 0;
     private GameResult gameResult;
-    private int gameTryCount = 1;
+    private int currentIdx;
+    private int gameTryCount;
 
     public BridgeGame(Bridge bridge) {
         this.bridge = bridge;
         this.gameResult = new GameResult();
+        this.currentIdx = 0;
+        this.gameTryCount = 1;
     }
 
     public boolean isFinish() {
@@ -31,6 +33,9 @@ public class BridgeGame {
 
         if (bridge.canMove(currentIdx++, movingCommand)) {
             gameResult.addMoveResult("O");
+            if (isSuccessGame(currentIdx)) {
+                gameResult.updateSuccess();
+            }
             return true;
         }
 
@@ -40,6 +45,14 @@ public class BridgeGame {
 
     public int getCurrentIdx() {
         return currentIdx;
+    }
+
+    public int getGameTryCount() {
+        return gameTryCount;
+    }
+
+    public String getSuccessResult() {
+        return gameResult.getGameSuccess();
     }
 
     public boolean isBridgeUp(int idx) {
@@ -69,7 +82,7 @@ public class BridgeGame {
         gameResult = new GameResult();
     }
 
-    public void quit() {
-        currentIdx = 20;
+    private boolean isSuccessGame(int currentIdx) {
+        return gameResult.checkSuccessGame(currentIdx);
     }
 }

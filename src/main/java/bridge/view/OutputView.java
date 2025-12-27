@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 public class OutputView {
 
     private static final String GAME_START_NOTICE = "다리 건너기 게임을 시작합니다.";
+    private static final String GAME_RESULT_NOTICE = "최종 게임 결과";
+    private static final String GAME_SUCCESS_RESULT_NOTICE = "게임 성공 여부: ";
+    private static final String GAME_TRY_COUNT_NOTICE = "총 시도한 횟수: ";
 
     public void printStart() {
         System.out.println(GAME_START_NOTICE);
@@ -22,9 +25,25 @@ public class OutputView {
      * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
      */
     public void printMap(BridgeGame bridgeGame) {
-        StringBuilder sb = new StringBuilder();
+        printUpMap(bridgeGame);
+        printDownMap(bridgeGame);
+    }
+
+    /**
+     * 게임의 최종 결과를 정해진 형식에 맞춰 출력한다.
+     * <p>
+     * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
+     */
+    public void printResult(BridgeGame bridgeGame) {
+        System.out.println(GAME_RESULT_NOTICE);
+        printUpMap(bridgeGame);
+        printDownMap(bridgeGame);
+        System.out.println(GAME_SUCCESS_RESULT_NOTICE + bridgeGame.getSuccessResult());
+        System.out.println(GAME_TRY_COUNT_NOTICE + bridgeGame.getGameTryCount());
+    }
+
+    private static void printUpMap(BridgeGame bridgeGame) {
         List<String> resultMap = new ArrayList<>();
-        // 위칸
         for (int i = 0; i < bridgeGame.getCurrentIdx(); i++) {
             if (bridgeGame.isBridgeUp(i) && bridgeGame.isMove(i)) {
                 resultMap.add("O");
@@ -36,12 +55,14 @@ public class OutputView {
             }
             resultMap.add(" ");
         }
-        sb.append(resultMap.stream()
-                        .collect(Collectors.joining(" | ", "[ ", " ]")))
-                .append("\n");
+        System.out.println(
+                resultMap.stream()
+                        .collect(Collectors.joining(" | ", "[ ", " ]"))
+        );
+    }
 
-        //아래칸
-        resultMap = new ArrayList<>();
+    private static void printDownMap(BridgeGame bridgeGame) {
+        List<String> resultMap = new ArrayList<>();
         for (int i = 0; i < bridgeGame.getCurrentIdx(); i++) {
             if (bridgeGame.isBridgeDown(i) && bridgeGame.isMove(i)) {
                 resultMap.add("O");
@@ -53,18 +74,9 @@ public class OutputView {
             }
             resultMap.add(" ");
         }
-        sb.append(resultMap.stream()
-                        .collect(Collectors.joining(" | ", "[ ", " ]")))
-                .append("\n");
-
-        System.out.println(sb);
-    }
-
-    /**
-     * 게임의 최종 결과를 정해진 형식에 맞춰 출력한다.
-     * <p>
-     * 출력을 위해 필요한 메서드의 인자(parameter)는 자유롭게 추가하거나 변경할 수 있다.
-     */
-    public void printResult() {
+        System.out.println(
+                resultMap.stream()
+                        .collect(Collectors.joining(" | ", "[ ", " ]"))
+        );
     }
 }
