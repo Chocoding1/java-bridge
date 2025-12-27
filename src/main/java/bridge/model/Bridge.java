@@ -7,7 +7,7 @@ public class Bridge {
     private final List<String> bridge;
 
     public Bridge(List<String> bridge) {
-        this.bridge = bridge;
+        this.bridge = List.copyOf(bridge);
     }
 
     public boolean canMove(int currentIdx, String movingCommand) {
